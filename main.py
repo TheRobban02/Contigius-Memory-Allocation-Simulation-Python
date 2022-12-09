@@ -24,15 +24,15 @@ class main:
 
     p1 = Process("A", 0, 200)
     p2 = Process("A", 1, 100)
+    p3 = Process("A", 2, 100)
     p4 = Process("D", 0)
-    p6 = Process("D", 1)
-    p7 = Process("A", 3, 50)
+    p5 = Process("D", 2)
+    p6 = Process("A", 3, 600)
+    p7 = Process("A", 4, 50)
 
-    List.bestFit(p1)
-    List.bestFit(p2)
-    List.deAllocate(p4)
-    List.deAllocate(p6)
-    List.bestFit(p7)
+    List.worstFit(p1)
+    List.worstFit(p2)
+    List.worstFit(p3)
    
     print("Allocated blocks")
     for x in List.blockList:
