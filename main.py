@@ -33,6 +33,10 @@ class main:
     List.worstFit(p1)
     List.worstFit(p2)
     List.worstFit(p3)
+    List.deAllocate(p4)
+    List.deAllocate(p5)
+    List.worstFit(p6)
+    List.worstFit(p7)
    
     print("Allocated blocks")
     for x in List.blockList:
