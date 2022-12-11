@@ -31,12 +31,12 @@ class main:
 
 
     print("Allocated blocks")
-    for x in List.blockList:
+    for x in List.memoryList:
         if(type(x) == Block):
             print(f"{x.process.id};{x.startAdress};{x.endAdress}")
     
     print("Free blocks")
-    for x in List.blockList:
+    for x in List.memoryList:
         if(type(x) == Hole):
             print(f"{x.startAdress};{x.endAdress}")
 
