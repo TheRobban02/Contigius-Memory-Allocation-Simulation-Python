@@ -8,16 +8,20 @@ class List:
 
     def firstFit(process):
         counter = 0
+        processFits = False
         for x in List.blockList:
             counter += 1
             if(type(x) == Hole and x.endAdress + 1 - x.startAdress >= process.size):
                 newBlock = Block(x.startAdress, x.startAdress + process.size - 1, process) # Create a new Block
+                processFits = True
                 if(newBlock.endAdress == List.maxMemory):
                     List.blockList.remove(x)  
                 else:
                     x.startAdress = newBlock.endAdress + 1  # Change startAdress on the Hole (Remove if space left is empty)
-                    
-        List.blockList.insert(counter-1, newBlock)  # Insert new block
+        if(processFits):
+            List.blockList.insert(counter-1, newBlock)  # Insert new block
+        else:
+            print("Will implement error message when a process does not fit")
 
     def addFirstBlock():
         List.blockList.append(Hole(0, List.maxMemory))
@@ -67,21 +71,29 @@ class List:
     def bestFit(process):
 
         difference = List.maxMemory # The difference between the size of the process and the hole size
-
+        processFits = False
         counter = 0
         for x in List.blockList:
             if(type(x) == Hole and x.endAdress + 1 - x.startAdress >= process.size):
                 if(difference >= x.endAdress - x.startAdress - process.size):
                     difference = x.endAdress + 1 - x.startAdress - process.size # Looks up the smallest Hole the process fits in
                     tempHole = List.blockList[counter]
+                    processFits = True
             counter += 1
-        newBlock = Block(tempHole.startAdress, tempHole.startAdress + process.size - 1, process)  # Creates the new block
-        if(newBlock.endAdress == List.maxMemory):
-            List.blockList.remove(x)  
-        else:
-            x.startAdress = newBlock.endAdress + 1  # Change startAdress on the Hole (Remove if space left is empty)
         
-        List.blockList.insert(counter-1, newBlock)  # Insert new block       
+        if(processFits): # Checks if the process have fitted in a hole or not
+            newBlock = Block(tempHole.startAdress, tempHole.startAdress + process.size - 1, process)  # Creates the new block
+            List.blockList.insert(counter-1, newBlock)  # Insert new block   
+            
+            if(newBlock.endAdress == List.maxMemory): # Removes Hole if the memory is filled
+                List.blockList.remove(x)  
+            else:
+                x.startAdress = newBlock.endAdress + 1  # Change startAdress on the Hole (Remove if space left is empty)
+        else:
+            print("Will implement error message when a process does not fit")
+        
+        
+            
     
     def worstFit(process):
 

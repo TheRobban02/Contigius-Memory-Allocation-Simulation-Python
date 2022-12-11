@@ -19,6 +19,11 @@ class main:
                 List.bestFit(x)
             elif(x.type == "D"):
                 List.deAllocate(x)
+            elif(x.type == "O"):
+                print("Add output immidiete") 
+            else:
+                print("Add compact method")
+
 
         # Do best fit/worst fit/first fit
         # Create output file
