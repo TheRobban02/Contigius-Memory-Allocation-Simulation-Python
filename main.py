@@ -24,7 +24,7 @@ class main:
             else:
                 print("Add compact method")
 
-
+        
         # Do best fit/worst fit/first fit
         # Create output file
         # Create immidiete files
