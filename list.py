@@ -39,11 +39,6 @@ class List:
             counter -= 1
             for x in List.blockList:
                 index = List.blockList.index(x) # Gets the index of the current Hole/Block
-                # if(x == List.blockList[-1] and len(List.blockList) > 1): # Special when there are only two
-                #     if(type(List.blockList[index]) == Hole and (type(List.blockList[index - 1]) == Hole)):
-                #         x.startAdress = List.blockList[index - 1].startAdress   
-                #         List.blockList.remove(List.blockList[index -1])
-
                 if(type(List.blockList[index]) == Hole and len(List.blockList) > 1 and x != List.blockList[-1] and (type(List.blockList[index + 1]) == Hole)):
                     x.endAdress = List.blockList[index + 1].endAdress
                     List.blockList.remove(List.blockList[index + 1])
@@ -54,14 +49,19 @@ class List:
         largestFreeMemory = 0
         totalFreeMemory = 0
 
+        counter = 0
         for x in List.blockList:
             if(type(x) == Hole):
                 blockSize = x.endAdress + 1 - x.startAdress
+                counter += 1
                 if(blockSize > largestFreeMemory):
                     largestFreeMemory = blockSize
                 totalFreeMemory += blockSize
 
-        return round(1 - (largestFreeMemory / totalFreeMemory), 6)
+        if(counter == 0):
+            return 0
+        else:
+            return round(1 - (largestFreeMemory / totalFreeMemory), 6)
     
 
     def bestFit(process):
@@ -87,7 +87,7 @@ class List:
 
         tempList = []
         for x in List.blockList:
-            if(type(x) == Hole and x.endAdress - x.startAdress >= process.size):
+            if(type(x) == Hole and x.endAdress - x.startAdress >= process.size - 1):
                 tempList.append(x)
         
         difference = 0
@@ -104,21 +104,3 @@ class List:
                     List.blockList.remove(x) # Remove hole if memory is full.  
                 else:
                     x.startAdress = newBlock.endAdress + 1  # Change startAdress on the Hole (Remove if space left is empty)
-        
-
-        # difference = 0 # The difference between the size of the process and the hole size
-
-        # counter = 0
-        # for x in List.blockList:
-        #     if(type(x) == Hole and x.endAdress + 1 - x.startAdress >= process.size):
-        #         if(difference <= x.endAdress - x.startAdress - process.size):
-        #             difference = x.endAdress + 1 - x.startAdress - process.size # Looks up the smallest Hole the process fits in
-        #             tempHole = List.blockList[counter]
-        #     counter += 1
-        # newBlock = Block(tempHole.startAdress, tempHole.startAdress + process.size - 1, process)  # Creates the new block
-        # if(newBlock.endAdress == List.maxMemory):
-        #     List.blockList.remove(x) # Remove hole if memory is full.  
-        # else:
-        #     x.startAdress = newBlock.endAdress + 1  # Change startAdress on the Hole (Remove if space left is empty)
-        
-        # List.blockList.insert(counter-1, newBlock)  # Insert new block   
