@@ -45,19 +45,13 @@ class Main:
                 else:
                     print("Add compact method")
 
-            Save.prepareSaving(file)        
+            Save.prepareSaving(file)
+            Save.clearList()
+            List.memoryList.clear()
+            ErrorHandler.errorList.clear()
+            Load.processList.clear()     
 
 
     simulation("First fit")
-    Save.clearList()
-    List.memoryList.clear()
-    ErrorHandler.errorList.clear()
-    Load.processList.clear()
-
     simulation("Best fit")
-    Save.clearList()
-    List.memoryList.clear()
-    ErrorHandler.errorList.clear()
-    Load.processList.clear()
-
     simulation("Worstfit")
