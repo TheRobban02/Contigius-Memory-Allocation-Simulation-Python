@@ -29,13 +29,19 @@ class List:
 
     def deAllocate(process): # Method that substitutes Blocks with Holes
         counter = -1
+        processRemoved = False
         for x in List.memoryList:
             counter += 1
             if(type(x) == Block and x.process.id == process.id):
                 newHole = Hole(x.startAdress, x.endAdress) # Create new Hole
                 List.memoryList.insert(counter, newHole) # insert the hole before the block
                 List.memoryList.remove(x) # remove the block 
+                processRemoved = True
         List.mergeHoles()
+        if(processRemoved):
+            return True
+        else:
+            return False
 
     def mergeHoles(): # If there are two Holes next to each other we merge these togheter
         counter = len(List.memoryList)
@@ -89,9 +95,9 @@ class List:
                 List.memoryList.remove(x)  
             else:
                 x.startAdress = newBlock.endAdress + 1  # Change startAdress on the Hole (Remove if space left is empty)
+            return True
         else:
-            print("Will implement error message when a process does not fit")   
-            
+            return False            
 
     def worstFit(process):
 
@@ -114,3 +120,11 @@ class List:
                     List.memoryList.remove(x) # Remove hole if memory is full.  
                 else:
                     x.startAdress = newBlock.endAdress + 1  # Change startAdress on the Hole (Remove if space left is empty)
+
+
+    def getLargestHole():
+        size = 0
+        for x in List.memoryList:
+            if (type(x) == Hole and x.endAdress + 1 - x.startAdress > size):
+                size = x.endAdress + 1 - x.startAdress
+        return size

@@ -1,3 +1,5 @@
+from load import Load
+
 class ErrorHandler:
 
     errorList = []
@@ -11,15 +13,10 @@ class ErrorHandler:
         else:
             return "None"
 
-    def getErrorType(process):
-        if(process.type == "A"):
-            return "A"
-        else:
-            return "D"
-
-    def getInstructionNumber(process):
-        print("TODO")
-    
     def getFailureReason(process):
-        # Figure out way to check if the process.id has been attempted to be allocated before or not
-        return
+        for x in Load.processList:
+            if(x.id == process.id):
+                if(x.attemptedAllocation):
+                    return 1
+                else:
+                    return 0

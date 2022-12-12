@@ -13,7 +13,9 @@ class Load:
         
         
         for filename in os.listdir(Load.directory):
-            nameList.append(filename)
+            str = filename.split(".")
+            if(str[1] == "in"):
+                nameList.append(filename)
         
         return nameList
     

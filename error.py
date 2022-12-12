@@ -3,7 +3,7 @@ class Error:
     def __init__(self, type, instructionNumber, freeParameter):
         self.type = type
         self.instructionNumber = instructionNumber
-        self.freeParamter = freeParameter
+        self.freeParameter = freeParameter
     
     @property
     def type(self):
