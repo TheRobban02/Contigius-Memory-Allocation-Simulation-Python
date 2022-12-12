@@ -130,3 +130,28 @@ class List:
             if (type(x) == Hole and x.endAdress + 1 - x.startAdress > size):
                 size = x.endAdress + 1 - x.startAdress
         return size
+
+    def compress():
+        for x in List.memoryList:
+            if(type(x) == Hole):
+                for y in List.memoryList:
+                    if(List.processFits(y, x) and type(y) == Block):
+                        if(y.startAdress > x.endAdress):
+                            temp = y.endAdress
+                            y.startAdress = x.startAdress
+                            y.endAdress = x.startAdress + y.process.size - 1
+                            x.startAdress = y.endAdress + 1
+                            x.endAdress = temp
+                            
+                            index = List.memoryList.index(y)
+
+                            if(y.endAdress + 1 != List.memoryList[index + 1].startAdress):
+                                List.memoryList.insert(index, Hole(y.endAdress + 1, List.memoryList[index + 1].startAdress -1))
+        List.mergeHoles()
+        # Inserteas på fel ställe
+
+    def processFits(block, hole):
+        if(block.endAdress + 1 - block.startAdress <= hole.endAdress + 1 - hole.startAdress):
+            return True
+        else:
+            return False

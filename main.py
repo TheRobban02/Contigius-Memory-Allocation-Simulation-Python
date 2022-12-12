@@ -43,7 +43,7 @@ class Main:
                     Save.prepIntermididate(file, intermediateCounter)
                     Save.saveList.append(strategy)
                 else:
-                    print("Add compact method")
+                    List.compress()
 
             Save.prepareSaving(file)
             Save.clearList()
