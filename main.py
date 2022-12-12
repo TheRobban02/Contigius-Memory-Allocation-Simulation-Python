@@ -1,7 +1,4 @@
 from list import List
-from process import Process
-from block import Block
-from hole import Hole
 from load import Load
 from errorHandler import ErrorHandler
 from error import Error
@@ -17,11 +14,12 @@ class Main:
             
             Save.saveList.append(strategy)
 
+            intermediateCounter = 0
             counter = 0
             Load.readFile(file)
 
             for x in Load.processList:
-                intermediateCounter = 0
+                
                 counter += 1
                 if(x.type != "A" and x.type != "D" and x.type != "O" and x.type != "C"):
                     List.maxMemory = int(x.type) -1
@@ -42,60 +40,24 @@ class Main:
                         ErrorHandler.addError(Error("D", counter, ErrorHandler.getFailureReason(x)))
                 elif(x.type == "O"):
                     intermediateCounter += 1
-                    Save.writeIntermediateFile(file, intermediateCounter)
+                    Save.prepIntermididate(file, intermediateCounter)
+                    Save.saveList.append(strategy)
                 else:
                     print("Add compact method")
-            
-            Save.saveList.append("Allocated blocks")
-            for x in List.memoryList:
-                if(type(x) == Block):
-                    Save.saveList.append(f"{x.process.id};{x.startAdress};{x.endAdress}")
 
-            Save.saveList.append("Free blocks")
-            for x in List.memoryList:
-                if(type(x) == Hole):
-                   Save.saveList.append(f"{x.startAdress};{x.endAdress}")
+            Save.prepareSaving(file)        
 
-            Save.saveList.append("Fragmentation")
-            Save.saveList.append(f"{List.calcFragmentation()}")
-            Save.saveList.append("Errors")
-            
-            if(len(ErrorHandler.errorList) == 0):
-                Save.saveList.append("None")
-            else:
-                for error in ErrorHandler.errorList:
-                    Save.saveList.append(f"{error.type};{error.instructionNumber};{error.freeParameter}")
-
-            Save.writeFile(file)
 
     simulation("First fit")
     Save.clearList()
     List.memoryList.clear()
+    ErrorHandler.errorList.clear()
+    Load.processList.clear()
+
     simulation("Best fit")
     Save.clearList()
     List.memoryList.clear()
+    ErrorHandler.errorList.clear()
+    Load.processList.clear()
+
     simulation("Worstfit")
-
-
-
-    # Add return statements
-
-
-    # print("Allocated blocks")
-    # for x in List.memoryList:
-    #     if(type(x) == Block):
-    #         print(f"{x.process.id};{x.startAdress};{x.endAdress}")
-    
-    # print("Free blocks")
-    # for x in List.memoryList:
-    #     if(type(x) == Hole):
-    #         print(f"{x.startAdress};{x.endAdress}")
-
-    # print(f"Fragmentation\n{List.calcFragmentation()}")
-    
-    # print(f"Errors")
-
-    # for error in ErrorHandler.errorList:
-    #     print(f"{error.type};{error.instructionNumber};{error.freeParameter}")
-
-    

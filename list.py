@@ -20,8 +20,9 @@ class List:
                     x.startAdress = newBlock.endAdress + 1  # Change startAdress on the Hole (Remove if space left is empty)
         if(processFits):
             List.memoryList.insert(counter-1, newBlock)  # Insert new block
+            return True
         else:
-            print("Will implement error message when a process does not fit")
+            return False
 
     def addFirstBlock():
         List.memoryList.append(Hole(0, List.maxMemory))
@@ -100,7 +101,7 @@ class List:
             return False            
 
     def worstFit(process):
-
+        processFits = False
         tempList = []
         for x in List.memoryList:
             if(type(x) == Hole and x.endAdress - x.startAdress >= process.size - 1):
@@ -115,12 +116,13 @@ class List:
             if(x.endAdress + 1 - x.startAdress == difference and type(x) == Hole):
                 newBlock = Block(x.startAdress, x.startAdress + process.size - 1, process)
                 List.memoryList.insert(List.memoryList.index(x), newBlock)
-       
+                processFits = True
                 if(newBlock.endAdress == List.maxMemory):
                     List.memoryList.remove(x) # Remove hole if memory is full.  
                 else:
                     x.startAdress = newBlock.endAdress + 1  # Change startAdress on the Hole (Remove if space left is empty)
-
+        
+        return processFits
 
     def getLargestHole():
         size = 0

@@ -8,7 +8,7 @@ Free blocks
 Fragmentation
 0.142857
 Errors
-None
+A;9;600
 
 Best fit
 Allocated blocks
@@ -20,7 +20,7 @@ Free blocks
 Fragmentation
 0.142857
 Errors
-None
+A;9;600
 
 Worstfit
 Allocated blocks
@@ -32,5 +32,5 @@ Free blocks
 Fragmentation
 0.142857
 Errors
-None
+A;9;600
 

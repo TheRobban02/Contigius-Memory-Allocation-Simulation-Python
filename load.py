@@ -11,7 +11,6 @@ class Load:
     def getFileNames():
         nameList = []
         
-        
         for filename in os.listdir(Load.directory):
             str = filename.split(".")
             if(str[1] == "in"):
