@@ -11,6 +11,10 @@ class Hole:
     @property
     def endAdress(self):
         return self._endAdress
+
+    @property
+    def size(self):
+        return self.endAdress + 1 - self.startAdress
     
     @startAdress.setter
     def startAdress(self, x):

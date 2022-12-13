@@ -39,16 +39,22 @@ class Save:
         Save.saveList.clear()
 
     def prepareSaving(file):
+
         Save.saveList.append("Allocated blocks")
+        tempList = []
         for x in List.memoryList:
             if(type(x) == Block):
-                Save.saveList.append(f"{x.process.id};{x.startAdress};{x.endAdress}")
+                tempList.append(x)
+
+        tempList.sort(key=lambda x:x.process.id) # Sorts the allocated blocks by id
+        for x in tempList:
+            Save.saveList.append(f"{x.process.id};{x.startAdress};{x.endAdress}")
 
         Save.saveList.append("Free blocks")
         for x in List.memoryList:
             if(type(x) == Hole):
                 Save.saveList.append(f"{x.startAdress};{x.endAdress}")
-
+        
         Save.saveList.append("Fragmentation")
         Save.saveList.append(f"{List.calcFragmentation()}")
         Save.saveList.append("Errors")

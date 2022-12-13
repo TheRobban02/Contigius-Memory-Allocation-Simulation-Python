@@ -49,9 +49,8 @@ class Main:
             Save.clearList()
             List.memoryList.clear()
             ErrorHandler.errorList.clear()
-            Load.processList.clear()     
-
+            Load.processList.clear()
 
     simulation("First fit")
     simulation("Best fit")
-    simulation("Worstfit")
+    simulation("Worst fit")

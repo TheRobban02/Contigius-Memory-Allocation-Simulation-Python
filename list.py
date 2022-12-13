@@ -7,22 +7,18 @@ class List:
     memoryList = []
 
     def firstFit(process):
-        counter = 0
-        processFits = False
         for x in List.memoryList:
-            counter += 1
-            if(type(x) == Hole and x.endAdress + 1 - x.startAdress >= process.size):
-                newBlock = Block(x.startAdress, x.startAdress + process.size - 1, process) # Create a new Block
-                processFits = True
+            if(type(x) == Hole and x.size >= process.size):
+                newBlock = Block(x.startAdress, x.startAdress + process.size - 1, process)
+                List.memoryList.append(newBlock)
                 if(newBlock.endAdress == List.maxMemory):
-                    List.memoryList.remove(x)  
+                    List.memoryList.remove(x)
                 else:
-                    x.startAdress = newBlock.endAdress + 1  # Change startAdress on the Hole (Remove if space left is empty)
-        if(processFits):
-            List.memoryList.insert(counter-1, newBlock)  # Insert new block
-            return True
-        else:
-            return False
+                    x.startAdress = newBlock.endAdress + 1
+                List.memoryList.sort(key=lambda x: x.startAdress)
+                List.mergeHoles()
+                return True
+        return False
 
     def addFirstBlock():
         List.memoryList.append(Hole(0, List.maxMemory))
@@ -69,36 +65,33 @@ class List:
                     largestFreeMemory = blockSize
                 totalFreeMemory += blockSize
 
-        if(counter == 0):
-            return 0
+        if(largestFreeMemory == totalFreeMemory):
+            return "0.000000"
         else:
             return round(1 - (largestFreeMemory / totalFreeMemory), 6)
     
 
     def bestFit(process):
 
-        difference = List.maxMemory # The difference between the size of the process and the hole size
         processFits = False
-        counter = 0
+        tempList = []
         for x in List.memoryList:
-            if(type(x) == Hole and x.endAdress + 1 - x.startAdress >= process.size):
-                if(difference >= x.endAdress - x.startAdress - process.size):
-                    difference = x.endAdress + 1 - x.startAdress - process.size # Looks up the smallest Hole the process fits in
-                    tempHole = List.memoryList[counter]
-                    processFits = True
-            counter += 1
+            if(type(x) == Hole and x.size >= process.size - 1):
+                tempList.append(x)
+                processFits = True
+
+        tempList.sort(key=lambda x: x.size)
         
-        if(processFits): # Checks if the process have fitted in a hole or not
-            newBlock = Block(tempHole.startAdress, tempHole.startAdress + process.size - 1, process)  # Creates the new block
-            List.memoryList.insert(counter-1, newBlock)  # Insert new block   
-            
-            if(newBlock.endAdress == List.maxMemory): # Removes Hole if the memory is filled
-                List.memoryList.remove(x)  
+        if(len(tempList) > 0):
+            newBlock = Block(tempList[0].startAdress, tempList[0].startAdress + process.size - 1, process)
+            List.memoryList.insert(List.memoryList.index(tempList[0]), newBlock)
+
+            if(newBlock.endAdress == List.maxMemory):
+                List.memoryList.remove(tempList[0]) # Remove hole if memory is full.  
             else:
-                x.startAdress = newBlock.endAdress + 1  # Change startAdress on the Hole (Remove if space left is empty)
-            return True
-        else:
-            return False            
+                tempList[0].startAdress = newBlock.endAdress + 1  # Change startAdress on the Hole (Remove if space left is empty)
+        
+        return processFits
 
     def worstFit(process):
         processFits = False
@@ -132,26 +125,33 @@ class List:
         return size
 
     def compress():
+        
+        blockList = []
+        holeList = []
+        
         for x in List.memoryList:
-            if(type(x) == Hole):
-                for y in List.memoryList:
-                    if(List.processFits(y, x) and type(y) == Block):
-                        if(y.startAdress > x.endAdress):
-                            temp = y.endAdress
-                            y.startAdress = x.startAdress
-                            y.endAdress = x.startAdress + y.process.size - 1
-                            x.startAdress = y.endAdress + 1
-                            x.endAdress = temp
-                            
-                            index = List.memoryList.index(y)
+            if(type(x) == Block):
+                blockList.append(x)
+            else:
+                holeList.append(x)
+        
+        List.memoryList.clear()
+        blockList.sort(key=lambda x:x.startAdress)
 
-                            if(y.endAdress + 1 != List.memoryList[index + 1].startAdress):
-                                List.memoryList.insert(index, Hole(y.endAdress + 1, List.memoryList[index + 1].startAdress -1))
-        List.mergeHoles()
-        # Inserteas på fel ställe
+        count = -1
+        for x in blockList:
+            count += 1
+            if(count == 0):
+                List.memoryList.append(x)
+            else:
+                if(blockList[count - 1].endAdress + 1 != x.startAdress):
+                    x.startAdress = blockList[count - 1].endAdress + 1
+                    List.memoryList.append(x)
+                else:
+                    List.memoryList.append(x)
 
-    def processFits(block, hole):
-        if(block.endAdress + 1 - block.startAdress <= hole.endAdress + 1 - hole.startAdress):
-            return True
-        else:
-            return False
+        List.memoryList.append(Hole(List.memoryList[-1].endAdress + 1, List.maxMemory))
+
+                
+
+    
