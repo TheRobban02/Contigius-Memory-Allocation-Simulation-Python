@@ -8,6 +8,12 @@ class List:
     memoryList = []
 
     def firstFit(process):
+        """
+        Check the memory list for a hole that is big enough to fit the process.
+        If there is one, create a new block and add it to the list.
+        @param process - the process we are trying to fit into memory
+        @returns True if the process was successfully added to memory, False otherwise.
+        """
         for x in List.memoryList:
             if (type(x) == Hole and x.size >= process.size):
                 newBlock = Block(x.startAdress,
@@ -23,9 +29,17 @@ class List:
         return False
 
     def addFirstBlock():
+        """
+        Add the first Hole to the memory list.
+        """
         List.memoryList.append(Hole(0, List.maxMemory))
 
-    def deAllocate(process):  # Method that substitutes Blocks with Holes
+    def deAllocate(process):
+        """
+        Deallocate the memory of a process.
+        @param process - the process to deallocate memory for
+        @returns True if the process was deallocated, False otherwise
+        """
         counter = -1
         processRemoved = False
         for x in List.memoryList:
@@ -42,8 +56,10 @@ class List:
         else:
             return False
 
-    # Merges two holes next to each other.
     def mergeHoles():
+        """
+        Merge any holes that are next to each other.
+        """
         counter = len(List.memoryList)
         while (counter > 0):
             counter -= 1
@@ -58,6 +74,10 @@ class List:
                     List.memoryList.remove(List.memoryList[index + 1])
 
     def calcFragmentation():
+        """
+        Calculate the fragmentation of the memory.
+        @return The fragmentation of the memory.
+        """
 
         largestFreeMemory = 0
         totalFreeMemory = 0
@@ -77,7 +97,11 @@ class List:
             return round(1 - (largestFreeMemory / totalFreeMemory), 6)
 
     def bestFit(process):
-
+        """
+        Method that finds the smallest hole in wich the process fits in.
+        Creates a new block and replaces that Hole with a Block.
+        returns True if the process fit, otherwise false.
+        """
         processFits = False
         tempList = []
         for x in List.memoryList:
@@ -104,6 +128,12 @@ class List:
         return processFits
 
     def worstFit(process):
+        """
+        Check if the process fits in the memory. If it does, create
+        a new block and insert it into the list.
+        @param process - the process we are adding.
+        @returns True if the process fits, False otherwise.
+        """
         processFits = False
         tempList = []
         for x in List.memoryList:
@@ -132,6 +162,10 @@ class List:
         return processFits
 
     def getLargestHole():
+        """
+        Find the largest hole in the memory list.
+        @return The size of the largest hole in the memory list.
+        """
         size = 0
         for x in List.memoryList:
             if (type(x) == Hole and x.endAdress + 1 - x.startAdress > size):
@@ -139,7 +173,9 @@ class List:
         return size
 
     def compress():
-
+        """
+        This function will compress the memory list.
+        """
         blockList = []
         holeList = []
 

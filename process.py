@@ -1,6 +1,13 @@
 class Process:
 
     def __init__(self, type, id="*", size="*", attemptedAllocation=False):
+        """
+        Initialize the object with the type, id, size, and attemptedAllocation.
+        @param type - the type of object (A, D, O, C)
+        @param id - the id of the object
+        @param size - the size of the object
+        @param attemptedAllocation-whether or not the object has been allocated
+        """
         self.type = type
         self.id = id
         self.size = size

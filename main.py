@@ -8,7 +8,10 @@ from save import Save
 class Main:
 
     def simulation(strategy):
-
+        """
+        Run the simulation with the given strategy.
+        @param strategy - the strategy to run the simulation with
+        """
         fileList = Load.getFileNames()
 
         for file in fileList:

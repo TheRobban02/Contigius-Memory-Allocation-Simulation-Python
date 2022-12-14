@@ -10,14 +10,14 @@ class Load:
     directory = 'files'
 
     def getFileNames():
-        nameList = []
+        fileNames = []
 
         for filename in os.listdir(Load.directory):
             str = filename.split(".")
             if (str[1] == "in"):
-                nameList.append(filename)
+                fileNames.append(filename)
 
-        return nameList
+        return fileNames
 
     def readFile(fileName):
         strList = []
@@ -28,6 +28,10 @@ class Load:
         Load.createProcesses(strList)
 
     def createProcesses(fileList):
+        """
+        Create a list of processes from a list of strings.        
+        @param fileList - the list of strings to create processes from.
+        """
         for row in fileList:
             str = row.split(";")
 

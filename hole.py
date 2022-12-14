@@ -1,6 +1,11 @@
 class Hole:
 
     def __init__(self, startAdress, endAdress):
+        """
+        Initialize the object with a start and end adress.
+        @param startAdress - the start adress.
+        @param endAdress - the end adress.
+        """
         self.startAdress = startAdress
         self.endAdress = endAdress
 
