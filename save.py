@@ -2,6 +2,8 @@ from list import List
 from block import Block
 from hole import Hole
 from errorHandler import ErrorHandler
+import os
+import glob
 
 class Save:
 
@@ -15,7 +17,13 @@ class Save:
         f = open("files/" + outputName, "a")
         for x in Save.saveList:
             f.write(f"{x}\n")
+    
+    def deleteFiles():
+        pattern = "files/*.out*"
+        files = glob.glob(pattern)
 
+        for file in files:
+            os.remove(file)
 
     def writeIntermediateFile(fileName, count):
         outputName = Save.getIntermediateName(fileName, count)
@@ -54,7 +62,7 @@ class Save:
         for x in List.memoryList:
             if(type(x) == Hole):
                 Save.saveList.append(f"{x.startAdress};{x.endAdress}")
-        
+
         Save.saveList.append("Fragmentation")
         Save.saveList.append(f"{List.calcFragmentation()}")
         Save.saveList.append("Errors")

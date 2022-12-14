@@ -151,7 +151,3 @@ class List:
                     List.memoryList.append(x)
 
         List.memoryList.append(Hole(List.memoryList[-1].endAdress + 1, List.maxMemory))
-
-                
-
-    

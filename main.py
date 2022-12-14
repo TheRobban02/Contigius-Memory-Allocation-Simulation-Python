@@ -51,6 +51,7 @@ class Main:
             ErrorHandler.errorList.clear()
             Load.processList.clear()
 
+    Save.deleteFiles() # Clear the output from old output files
     simulation("First fit")
     simulation("Best fit")
     simulation("Worst fit")
