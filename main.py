@@ -25,30 +25,29 @@ class Main:
             for x in Load.processList:
 
                 counter += 1
-                if (x.type != "A" and x.type != "D" and x.type != "O"
-                        and x.type != "C"):
+                if x.type not in ["A", "D", "O", "C"]:
                     List.maxMemory = int(x.type) - 1
                     List.addFirstHole()
-                elif (x.type == "A"):
+                elif x.type == "A":
                     x.attemptedAllocation = True
-                    if (strategy == "First fit"):
-                        if (List.firstFit(x) is False):
+                    if strategy == "First fit":
+                        if List.firstFit(x) is False:
                             ErrorHandler.addError(
                                 Error("A", counter, List.getLargestHole()))
-                    elif (strategy == "Best fit"):
-                        if (List.bestFit(x) is False):
+                    elif strategy == "Best fit":
+                        if List.bestFit(x) is False:
                             ErrorHandler.addError(
                                 Error("A", counter, List.getLargestHole()))
                     else:
-                        if (List.worstFit(x) is False):
+                        if List.worstFit(x) is False:
                             ErrorHandler.addError(
                                 Error("A", counter, List.getLargestHole()))
-                elif (x.type == "D"):
-                    if (List.deAllocate(x) is False):
+                elif x.type == "D":
+                    if List.deAllocate(x) is False:
                         ErrorHandler.addError(
                             Error("D", counter,
                                   ErrorHandler.getFailureReason(x)))
-                elif (x.type == "O"):
+                elif x.type == "O":
                     intermediateCounter += 1
                     Save.prepIntermididate(file, intermediateCounter)
                     Save.saveList.append(strategy)

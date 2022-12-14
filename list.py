@@ -19,7 +19,7 @@ class List:
                 new_block = Block(x.startAdress,
                     x.startAdress + process.size - 1, process)
                 List.memoryList.append(new_block)
-                if (new_block.endAdress == List.maxMemory):
+                if new_block.endAdress == List.maxMemory:
                     List.memoryList.remove(x)
                 else:
                     x.startAdress = new_block.endAdress + 1
@@ -78,7 +78,7 @@ class List:
                     largestFreeMemory = blockSize
                 totalFreeMemory += blockSize
 
-        if (largestFreeMemory == totalFreeMemory):
+        if largestFreeMemory == totalFreeMemory:
             return "0.000000"
         else:
             return round(1 - (largestFreeMemory / totalFreeMemory), 6)
@@ -127,7 +127,7 @@ class List:
 
         for x in List.memoryList:
             if (x.endAdress + 1 - x.startAdress == difference
-                    and type(x) == Hole):
+                    and isinstance(x, Hole)):
                 newBlock = Block(x.startAdress,
                                  x.startAdress + process.size - 1, process)
                 List.memoryList.insert(List.memoryList.index(x), newBlock)
@@ -147,7 +147,7 @@ class List:
         """
         size = 0
         for x in List.memoryList:
-            if (type(x) == Hole and x.endAdress + 1 - x.startAdress > size):
+            if isinstance(x, Hole) and x.endAdress + 1 - x.startAdress > size:
                 size = x.endAdress + 1 - x.startAdress
         return size
 

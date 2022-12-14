@@ -14,7 +14,7 @@ class Load:
 
         for filename in os.listdir(Load.directory):
             str = filename.split(".")
-            if (str[1] == "in"):
+            if str[1] == "in":
                 fileNames.append(filename)
 
         return fileNames
@@ -35,9 +35,9 @@ class Load:
         for row in fileList:
             str = row.split(";")
 
-            if (len(str) == 1):
+            if len(str) == 1:
                 Load.processList.append(Process(str[0]))
-            elif (len(str) == 2):
+            elif len(str) == 2:
                 Load.processList.append(Process(str[0], int(str[1])))
             else:
                 Load.processList.append(

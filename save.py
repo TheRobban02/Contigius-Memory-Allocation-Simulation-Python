@@ -49,7 +49,7 @@ class Save:
         Save.saveList.append("Allocated blocks")
         tempList = []
         for x in List.memoryList:
-            if (type(x) == Block):
+            if isinstance(x, Block):
                 tempList.append(x)
 
         tempList.sort(
@@ -60,14 +60,14 @@ class Save:
 
         Save.saveList.append("Free blocks")
         for x in List.memoryList:
-            if (type(x) == Hole):
+            if isinstance(x, Hole):
                 Save.saveList.append(f"{x.startAdress};{x.endAdress}")
 
         Save.saveList.append("Fragmentation")
         Save.saveList.append(f"{List.calcFragmentation()}")
         Save.saveList.append("Errors")
 
-        if (len(ErrorHandler.errorList) == 0):
+        if len(ErrorHandler.errorList) == 0:
             Save.saveList.append("None")
         else:
             for error in ErrorHandler.errorList:
@@ -81,13 +81,13 @@ class Save:
     def prepIntermididate(file, count):
         Save.saveList.append("Allocated blocks")
         for x in List.memoryList:
-            if (type(x) == Block):
+            if isinstance(x, Block):
                 Save.saveList.append(
                     f"{x.process.id};{x.startAdress};{x.endAdress}")
 
         Save.saveList.append("Free blocks")
         for x in List.memoryList:
-            if (type(x) == Hole):
+            if isinstance(x, Hole):
                 Save.saveList.append(f"{x.startAdress};{x.endAdress}")
 
         Save.saveList.append("Fragmentation")
