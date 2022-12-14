@@ -28,7 +28,7 @@ class Main:
                 if (x.type != "A" and x.type != "D" and x.type != "O"
                         and x.type != "C"):
                     List.maxMemory = int(x.type) - 1
-                    List.addFirstBlock()
+                    List.addFirstHole()
                 elif (x.type == "A"):
                     x.attemptedAllocation = True
                     if (strategy == "First fit"):
@@ -61,7 +61,7 @@ class Main:
             ErrorHandler.errorList.clear()
             Load.processList.clear()
 
-    Save.deleteFiles()  # Clear the output from old output files
+    Save.deleteFiles()
     simulation("First fit")
     simulation("Best fit")
     simulation("Worst fit")

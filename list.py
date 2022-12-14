@@ -15,23 +15,20 @@ class List:
         @returns True if the process was successfully added to memory, False otherwise.
         """
         for x in List.memoryList:
-            if (type(x) == Hole and x.size >= process.size):
-                newBlock = Block(x.startAdress,
-                                 x.startAdress + process.size - 1, process)
-                List.memoryList.append(newBlock)
-                if (newBlock.endAdress == List.maxMemory):
+            if isinstance(x, Hole) and x.size >= process.size:
+                new_block = Block(x.startAdress,
+                    x.startAdress + process.size - 1, process)
+                List.memoryList.append(new_block)
+                if (new_block.endAdress == List.maxMemory):
                     List.memoryList.remove(x)
                 else:
-                    x.startAdress = newBlock.endAdress + 1
+                    x.startAdress = new_block.endAdress + 1
                 List.memoryList.sort(key=lambda x: x.startAdress)
                 List.mergeHoles()
                 return True
         return False
 
-    def addFirstBlock():
-        """
-        Add the first Hole to the memory list.
-        """
+    def addFirstHole():
         List.memoryList.append(Hole(0, List.maxMemory))
 
     def deAllocate(process):
@@ -41,37 +38,27 @@ class List:
         @returns True if the process was deallocated, False otherwise
         """
         counter = -1
-        processRemoved = False
-        for x in List.memoryList:
+        for block in List.memoryList:
             counter += 1
-            if (type(x) == Block and x.process.id == process.id):
-                newHole = Hole(x.startAdress, x.endAdress)  # Create new Hole
-                List.memoryList.insert(
-                    counter, newHole)  # insert the hole before the block
-                List.memoryList.remove(x)  # remove the block
-                processRemoved = True
-        List.mergeHoles()
-        if (processRemoved):
-            return True
-        else:
-            return False
+            if isinstance(block, Block) and block.process.id == process.id:
+                new_hole = Hole(block.startAdress, block.endAdress)
+                List.memoryList.insert(counter, new_hole)
+                List.memoryList.remove(block)
+                List.mergeHoles()
+                return True
+        return False
 
     def mergeHoles():
         """
         Merge any holes that are next to each other.
         """
-        counter = len(List.memoryList)
-        while (counter > 0):
-            counter -= 1
-            for x in List.memoryList:
-                index = List.memoryList.index(
-                    x)  # Gets the index of the current Hole/Block
-                if (type(List.memoryList[index]) == Hole
-                        and len(List.memoryList) > 1
-                        and x != List.memoryList[-1]
-                        and (type(List.memoryList[index + 1]) == Hole)):
-                    x.endAdress = List.memoryList[index + 1].endAdress
-                    List.memoryList.remove(List.memoryList[index + 1])
+        for i, x in enumerate(List.memoryList):
+            if (isinstance(x, Hole)
+                    and len(List.memoryList) > 1
+                    and x != List.memoryList[-1]
+                    and (isinstance(List.memoryList[i + 1], Hole))):
+                x.endAdress = List.memoryList[i + 1].endAdress
+                List.memoryList.remove(List.memoryList[i + 1])
 
     def calcFragmentation():
         """
@@ -84,7 +71,7 @@ class List:
 
         counter = 0
         for x in List.memoryList:
-            if (type(x) == Hole):
+            if isinstance(x, Hole):
                 blockSize = x.endAdress + 1 - x.startAdress
                 counter += 1
                 if (blockSize > largestFreeMemory):
@@ -102,30 +89,22 @@ class List:
         Creates a new block and replaces that Hole with a Block.
         returns True if the process fit, otherwise false.
         """
-        processFits = False
-        tempList = []
-        for x in List.memoryList:
-            if (type(x) == Hole and x.size >= process.size - 1):
-                tempList.append(x)
-                processFits = True
+        temp_list = []
+        for hole in List.memoryList:
+            if isinstance(hole, Hole) and hole.size >= process.size - 1:
+                temp_list.append(hole)
 
-        tempList.sort(key=lambda x: x.size)
+        temp_list.sort(key=lambda x: x.size)
 
-        if (len(tempList) > 0):
-            newBlock = Block(tempList[0].startAdress,
-                             tempList[0].startAdress + process.size - 1,
-                             process)
-            List.memoryList.insert(List.memoryList.index(tempList[0]),
-                                   newBlock)
-
-            if (newBlock.endAdress == List.maxMemory):
-                List.memoryList.remove(tempList[0])
-                # Remove hole if memory is full.
+        if len(temp_list) > 0:
+            new_block = Block(temp_list[0].startAdress, temp_list[0].startAdress + process.size - 1, process)
+            List.memoryList.insert(List.memoryList.index(temp_list[0]), new_block)
+            if new_block.endAdress == List.maxMemory:
+                List.memoryList.remove(temp_list[0])
             else:
-                tempList[0].startAdress = newBlock.endAdress + 1
-            # Change startAdress on the Hole (Remove if space left is empty
-
-        return processFits
+                temp_list[0].startAdress = new_block.endAdress + 1
+            return True
+        return False
 
     def worstFit(process):
         """
@@ -137,7 +116,7 @@ class List:
         processFits = False
         tempList = []
         for x in List.memoryList:
-            if (type(x) == Hole
+            if (isinstance(x, Hole)
                     and x.endAdress - x.startAdress >= process.size - 1):
                 tempList.append(x)
 
@@ -157,7 +136,7 @@ class List:
                     List.memoryList.remove(x)  # Remove hole if memory is full.
                 else:
                     x.startAdress = newBlock.endAdress + 1
-                # Change startAdress on the Hole (Remove if space left is empty
+                # Change startAdress on the Hole
 
         return processFits
 

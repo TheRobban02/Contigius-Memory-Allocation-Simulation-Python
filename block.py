@@ -1,6 +1,12 @@
 class Block:
 
     def __init__(self, startAdress, endAdress, process):
+        """
+        Initialize the objecct with a start and end adress and the process number.
+        @param startAdress - the start adress of the process
+        @param endAdress - the end adress of the process
+        @param process - the process number
+        """
         self.startAdress = startAdress
         self.endAdress = endAdress
         self.process = process

@@ -1,6 +1,10 @@
 class Error:
 
     def __init__(self, type, instructionNumber, freeParameter):
+        """
+        Initialize the class.
+        @param type - the type of instruction ("A" or "D")
+        """
         self.type = type
         self.instructionNumber = instructionNumber
         self.freeParameter = freeParameter
