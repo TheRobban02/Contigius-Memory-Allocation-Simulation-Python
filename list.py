@@ -156,28 +156,31 @@ class List:
         This function will compress the memory list.
         """
         blockList = []
-        holeList = []
 
         for x in List.memoryList:
-            if (type(x) == Block):
+            if (isinstance(x, Block)):
                 blockList.append(x)
-            else:
-                holeList.append(x)
 
         List.memoryList.clear()
         blockList.sort(key=lambda x: x.startAdress)
 
-        count = -1
-        for x in blockList:
-            count += 1
-            if (count == 0):
-                List.memoryList.append(x)
+    
+        for i, block in enumerate(blockList):
+          
+            if (i == 0):
+                block.startAdress = 0
+                block.endAdress = block.process.size - 1
+                List.memoryList.append(block)
             else:
-                if (blockList[count - 1].endAdress + 1 != x.startAdress):
-                    x.startAdress = blockList[count - 1].endAdress + 1
-                    List.memoryList.append(x)
+                if (blockList[i - 1].endAdress + 1 != block.startAdress):
+                    
+                    block.startAdress = blockList[i - 1].endAdress + 1
+                    block.endAdress = block.startAdress + block.process.size - 1
+                    List.memoryList.append(block)
                 else:
-                    List.memoryList.append(x)
+                    List.memoryList.append(block)
+            
+            
 
         List.memoryList.append(
             Hole(List.memoryList[-1].endAdress + 1, List.maxMemory))

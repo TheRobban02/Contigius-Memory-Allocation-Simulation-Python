@@ -79,11 +79,19 @@ class Save:
         Save.writeFile(file)
 
     def prepIntermididate(file, count):
+
         Save.saveList.append("Allocated blocks")
+        tempList = []
+
         for x in List.memoryList:
             if isinstance(x, Block):
-                Save.saveList.append(
-                    f"{x.process.id};{x.startAdress};{x.endAdress}")
+               tempList.append(x)
+        
+        tempList.sort(
+            key=lambda x: x.process.id)  # Sorts the allocated blocks by id
+        for x in tempList:
+            Save.saveList.append(
+                f"{x.process.id};{x.startAdress};{x.endAdress}")
 
         Save.saveList.append("Free blocks")
         for x in List.memoryList:

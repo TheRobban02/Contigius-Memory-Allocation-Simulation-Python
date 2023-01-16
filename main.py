@@ -24,7 +24,7 @@ class Main:
 
             for x in Load.processList:
 
-                counter += 1
+                
                 if x.type not in ["A", "D", "O", "C"]:
                     List.maxMemory = int(x.type) - 1
                     List.addFirstHole()
@@ -53,6 +53,8 @@ class Main:
                     Save.saveList.append(strategy)
                 else:
                     List.compress()
+                
+                counter += 1
 
             Save.prepareSaving(file)
             Save.clearList()
