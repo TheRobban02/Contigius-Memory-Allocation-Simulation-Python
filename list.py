@@ -19,12 +19,13 @@ class List:
                 new_block = Block(x.startAdress,
                     x.startAdress + process.size - 1, process)
                 List.memoryList.append(new_block)
-                if new_block.endAdress == List.maxMemory:
+                if(new_block.endAdress - new_block.startAdress == x.endAdress - x.startAdress): # If hole size = new block size
+                    List.memoryList.remove(x)
+                elif new_block.endAdress == List.maxMemory:
                     List.memoryList.remove(x)
                 else:
                     x.startAdress = new_block.endAdress + 1
                 List.memoryList.sort(key=lambda x: x.startAdress)
-                List.mergeHoles()
                 return True
         return False
 
@@ -37,12 +38,10 @@ class List:
         @param process - the process to deallocate memory for
         @returns True if the process was deallocated, False otherwise
         """
-        counter = -1
-        for block in List.memoryList:
-            counter += 1
+        for i, block in enumerate(List.memoryList):
             if isinstance(block, Block) and block.process.id == process.id:
                 new_hole = Hole(block.startAdress, block.endAdress)
-                List.memoryList.insert(counter, new_hole)
+                List.memoryList.insert(i, new_hole)
                 List.memoryList.remove(block)
                 List.mergeHoles()
                 return True
@@ -100,6 +99,8 @@ class List:
             new_block = Block(temp_list[0].startAdress, temp_list[0].startAdress + process.size - 1, process)
             List.memoryList.insert(List.memoryList.index(temp_list[0]), new_block)
             if new_block.endAdress == List.maxMemory:
+                List.memoryList.remove(temp_list[0])
+            elif new_block.endAdress - new_block.startAdress == temp_list[0].endAdress - temp_list[0].startAdress:
                 List.memoryList.remove(temp_list[0])
             else:
                 temp_list[0].startAdress = new_block.endAdress + 1
@@ -179,8 +180,6 @@ class List:
                     List.memoryList.append(block)
                 else:
                     List.memoryList.append(block)
-            
-            
 
         List.memoryList.append(
             Hole(List.memoryList[-1].endAdress + 1, List.maxMemory))

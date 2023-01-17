@@ -23,7 +23,6 @@ class Main:
             Load.readFile(file)
 
             for x in Load.processList:
-
                 
                 if x.type not in ["A", "D", "O", "C"]:
                     List.maxMemory = int(x.type) - 1
