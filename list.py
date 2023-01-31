@@ -14,18 +14,17 @@ class List:
         @param process - the process we are trying to fit into memory
         @returns True if the process was successfully added to memory, False otherwise.
         """
-        for x in List.memoryList:
+        for index, x in enumerate(List.memoryList):
             if isinstance(x, Hole) and x.size >= process.size:
                 new_block = Block(x.startAdress,
                     x.startAdress + process.size - 1, process)
-                List.memoryList.append(new_block)
+                List.memoryList.insert(index, new_block)
                 if(new_block.endAdress - new_block.startAdress == x.endAdress - x.startAdress): # If hole size = new block size
                     List.memoryList.remove(x)
                 elif new_block.endAdress == List.maxMemory:
                     List.memoryList.remove(x)
                 else:
                     x.startAdress = new_block.endAdress + 1
-                List.memoryList.sort(key=lambda x: x.startAdress)
                 return True
         return False
 
@@ -58,6 +57,7 @@ class List:
                     and (isinstance(List.memoryList[i + 1], Hole))):
                 x.endAdress = List.memoryList[i + 1].endAdress
                 List.memoryList.remove(List.memoryList[i + 1])
+                List.mergeHoles()
 
     def calcFragmentation():
         """
@@ -80,7 +80,8 @@ class List:
         if largestFreeMemory == totalFreeMemory:
             return "0.000000"
         else:
-            return round(1 - (largestFreeMemory / totalFreeMemory), 6)
+            # return round(1 - (largestFreeMemory / totalFreeMemory), 6)
+            return ("{:.6f}".format(1 - (largestFreeMemory / totalFreeMemory)))
 
     def bestFit(process):
         """
