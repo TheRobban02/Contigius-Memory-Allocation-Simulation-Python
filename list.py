@@ -114,32 +114,25 @@ class List:
         @param process - the process we are adding.
         @returns True if the process fits, False otherwise.
         """
-        processFits = False
-        tempList = []
-        for x in List.memoryList:
-            if (isinstance(x, Hole)
-                    and x.endAdress - x.startAdress >= process.size - 1):
-                tempList.append(x)
 
-        difference = 0
-        for x in tempList:
-            if (x.endAdress + 1 - x.startAdress > difference):
-                difference = x.endAdress + 1 - x.startAdress
+        temp_list = []
+        for hole in List.memoryList:
+            if isinstance(hole, Hole) and hole.size >= process.size - 1:
+                temp_list.append(hole)
 
-        for x in List.memoryList:
-            if (x.endAdress + 1 - x.startAdress == difference
-                    and isinstance(x, Hole)):
-                newBlock = Block(x.startAdress,
-                                 x.startAdress + process.size - 1, process)
-                List.memoryList.insert(List.memoryList.index(x), newBlock)
-                processFits = True
-                if (newBlock.endAdress == List.maxMemory):
-                    List.memoryList.remove(x)  # Remove hole if memory is full.
-                else:
-                    x.startAdress = newBlock.endAdress + 1
-                # Change startAdress on the Hole
+        temp_list.sort(key=lambda x: x.size, reverse=True)
 
-        return processFits
+        if len(temp_list) > 0:
+            new_block = Block(temp_list[0].startAdress, temp_list[0].startAdress + process.size - 1, process)
+            List.memoryList.insert(List.memoryList.index(temp_list[0]), new_block)
+            if new_block.endAdress == List.maxMemory:
+                List.memoryList.remove(temp_list[0])
+            elif new_block.endAdress - new_block.startAdress == temp_list[0].endAdress - temp_list[0].startAdress:
+                List.memoryList.remove(temp_list[0])
+            else:
+                temp_list[0].startAdress = new_block.endAdress + 1
+            return True
+        return False
 
     def getLargestHole():
         """
@@ -148,8 +141,8 @@ class List:
         """
         size = 0
         for x in List.memoryList:
-            if isinstance(x, Hole) and x.endAdress + 1 - x.startAdress > size:
-                size = x.endAdress + 1 - x.startAdress
+            if isinstance(x, Hole) and x.size > size:
+                size = x.size
         return size
 
     def compress():
